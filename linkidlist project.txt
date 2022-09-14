@@ -1,0 +1,219 @@
+#include <iostream>
+
+using namespace std;
+class node {
+  public :
+      int data ;
+      node *next;                    // data to fill
+};
+class linkidlist{
+    public:             // create list
+node *head  ;                  // pointer pointed TO THE FIRST ELEMENT
+linkidlist() {
+head = NULL;            // constructor to initialize the value of pointer
+}
+/*
+this method to check if the item is found or not >>  it take the value and return boolean value
+true if it found or false if not .
+*/
+ bool isfound( int item) {
+ node *temp = head ;
+ while (temp != NULL){
+   if ( temp->data == item ) return true ;
+   temp = temp->next ;
+
+ }
+ return false ;
+ }
+
+ /*
+ this method to check if the list is empty or not >> it return a boolean value
+ true if the list is empty or false if not .
+ */
+  bool isempty() {
+    return (head == NULL ) ;        // linked list is empty when head pointer points to null
+    }
+
+    /*
+    this method to show the items in the list
+    */
+ void print () {
+node *temp = head ;
+while (temp!=NULL) {
+    cout << temp->data << " " ;
+    temp = temp->next;
+ }
+ cout<<"\n" ;
+
+    }
+    /*
+     this method to count the number of items in the list
+    */
+  int counter (){
+        int counter = 0 ;
+    node *temp = head ;
+while (temp!=NULL) {
+  counter ++ ;
+    temp = temp->next;
+ }
+ return counter ;
+    }
+
+
+    /*
+    this method to add an item first  .
+    */
+   void addfirst( int item ) {
+        node *newnode = new node () ;
+          newnode ->data = item ;
+    if (isempty()){
+        newnode->next = NULL;           // the first node in the  list
+        head = newnode ;
+       cout<<"the first node item is " << item <<endl  ;
+    }
+    else {                                          //  the list is not empty
+          newnode->next = head ;
+          head = newnode ;
+
+    }
+    }
+/*
+this method to add an item before
+*/
+     void addbetween ( int newitem ,  int item2  ) {
+        if (isfound(item2)){
+        node *temp = head ;           // pointer starts with head pointer
+         node *newnode = new node () ;
+          newnode ->data = newitem ;
+          while (temp != NULL && temp->next->data != item2){     // traverse until reach before the item we want to add before
+          temp = temp->next ;
+          }
+            newnode->next = temp->next;
+            temp->next= newnode ;
+        }
+        else {
+            cout<<"Sorry the item " << " " << item2 << " " << "is not found " <<endl ;
+        }
+    }
+
+    /*
+    this method to add an item at the end of the list
+    */
+
+    void append (int item ) {
+     node *temp = head ;           // pointer starts with head pointer
+         node *newnode = new node () ;
+          newnode ->data = item ;
+          while (temp->next != NULL){
+                         // add at the end
+                         temp = temp->next;
+          }
+          temp->next = newnode;
+            newnode->next = NULL ;
+    }
+
+
+/*
+this method to delete an item
+*/
+
+     void deleteitem(int item) {
+        if (isempty()) {
+            cout << "Sorry the list is empty  you can't delete item from it !! \n";
+        }
+        else{
+        if (isfound(item)){
+            cout<< "the item" <<" " << item <<"  is founded you can delete it \n ";
+        if ( head->data == item ){
+                 node *del = head ;
+                // new pointer to delete
+            //( so that we can return and delete it to be sure that  the node is deleted from the memory)
+            head = head->next ;     // the next node
+            delete del ;                // to delete the node
+        }
+        else {
+                node *pre = NULL ;
+                  node *del = head ;
+                 while (del->data != item ) {
+                     pre = del ;
+                     del = del->next ;
+                 }
+                  pre->next = del->next ;
+                     delete del ;
+
+        }
+        }
+
+    }
+    }
+
+};
+int main()
+{
+   linkidlist k ;
+
+   do {
+cout<<"press 1 : to add a new item " <<endl ;
+cout<<"press 2 : to delete an element"<<endl;
+cout<<"press 3 : to search for item "<<endl;
+cout<<"press 4 : to know the number of items "<<endl;
+cout<<"press 5 : to print  items "<<endl;
+
+ int ch , x  , y , z , c  ;      char position;
+ cin>>ch;
+ switch(ch) {
+ case 1 :
+     cout<<"choose the position to add in >> A to add first >> B to add in between two items  >> C to add last"<<endl;
+     cin>>position;
+     switch (position){
+      case 'A' :
+        cout << "enter the item to add" <<endl ;
+        cin>>x ;
+        k.addfirst(x) ;
+        break ;
+      case 'B' :
+        cout<< "enter the two items " <<endl ;
+        cin>>y>>z;
+        k.addbetween(y,z);
+        break ;
+      case 'C' :
+            cout << "enter the item to add" <<endl ;
+            cin>>x ;
+            k.append(x);
+
+
+     }
+     break ;
+      case 2 :
+               cout << "enter the item to delete" <<endl ;
+               cin >> x ;
+               k.deleteitem(x) ;
+               break;
+
+      case 3 :
+          cout << "enter the item to search for" <<endl ;
+          cin>>x ;
+        if (  k.isfound(x) ){
+            cout<<"Yes , the element is found\n";
+        }
+        else {
+            cout<<"No , the element is not found \n " ;
+        }
+          break ;
+
+      case 4 :
+          c =  k.counter() ;
+         cout<<"the number of items is " << c << endl ;
+         break;
+      case 5 :
+          cout<<"the items are" <<" " ;
+         k.print ();
+         break;
+
+ }
+   }
+ while(true) ;
+
+    return 0;
+
+}
